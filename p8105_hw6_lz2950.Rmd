@@ -141,6 +141,14 @@ model_results |>
 
 ### Problem 2
 
+**The boostrap is helpful when you'd like to perform inference for a parameter / value / summary that doesn't have an easy-to-write-down distribution in the usual repeated sampling framework. We'll focus on a simple linear regression with `tmax` as the response with `tmin` and `prcp` as the predictors, and are interested in the distribution of two quantities estimated from these data:**
+
+-   $\hat{r}^2$
+
+-   $log(\hat{\beta_1} * \hat{\beta_2})$
+
+**Use 5000 bootstrap samples and, for each bootstrap sample, produce estimates of these two quantities. Plot the distribution.
+
 First, download the data.
 ```{r}
 weather_df = 
@@ -185,7 +193,7 @@ var |>
   labs(title = "r squared estimates Distribution",
        x = "r square")
 ```
-This plot of r square is left skewed with the mode around 0.92.
+This plot of r square is left skewed with the mode around 0.92.But this distribution is approximately normal. 
 ```{r}
 var |>
   ggplot(aes(x = log_beta12)) +
@@ -194,6 +202,7 @@ var |>
        x = "log_beta1 * log_beta2")
 
 ```
+This plot of log_beta1*log_beta2 is also left skewed with some outliers.
 
 ```{r}
 tibble(
@@ -253,7 +262,7 @@ sum(is.na(birthwt))
 ```
 The resulting data set has `r nrow(birthwt)` observations and `r ncol(birthwt)` variables. There is no NA values in this data set.
 
-Then I fitted the data to a model with all the variables included as predictors.
+Then I fitted the data to a model with all the variables included as predictors because I want to see the overall performance first.
 ```{r}
 birthwt_model =
   birthwt |> 
@@ -265,7 +274,7 @@ birthwt |>
   ggplot(aes(x = pred, y = resid)) +
   geom_point()
 ```
-From the plot, it seems no relation between residuals and fitted values.
+From the plot, it seems no strong relation between residuals and fitted values.
 
 Compare the model to two others:
 
